@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+    <!-- <link rel="stylesheet" href="/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <% include header %><hr>
+</head>
+<body>
+    <section class="container about-content" style=" padding-left: 100px;">
+        <%if(answers){%>
+        <%answers.forEach(function(item){%>
+        <div class = "ans_name">
+            <div class = "ans_name_title" style="border-bottom:none;">
+                <h3>청원답변</h3>
+                <h2><a href="/boards/view?id=<%=item.petitions._id%>"><%=item.petitions.title%></a></h2>
+            </div>
+            <ol class="ans_name_info" style="list-style:none">
+                <li class"ans_name_info_list1" style="background-size: 20%; background-image: url(/assets/images/arrow.png);background-repeat: no-repeat;background-position: right 32px;">
+                    <img src="/assets/images/start.png" width="100">
+                    <p>청원시작</p>
+                    <p>[<%=dateFormatChange(item.petitions.start_date)%>]</p>    
+                </li>
+                <li class"ans_name_info_list2" style="background-size: 20%; background-image: url(/assets/images/arrow.png);background-repeat: no-repeat;background-position: right 32px;">
+                    <img src="/assets/images/end.png" width="100">
+                    <p>청원마감</p>
+                    <p>[<%=dateFormatChange(item.petitions.end_date)%>]</p>    
+                </li>            
+                <li class"ans_name_info_list3" style="background-size: 20%; background-image: url(/assets/images/arrow.png);background-repeat: no-repeat;background-position: right 32px;">
+                    <img src="/assets/images/parti.png" width="100">
+                    <p>참여인원</p>
+                    <p>[<%=item.petitions.parti_cnt%>] 명</p>    
+                </li>            
+                <li class"ans_name_info_list4" style="background-size: 20%; background-image: url(/assets/images/arrow.png);background-repeat: no-repeat;background-position: right 32px;">
+                    <img src="/assets/images/answer.png" width="100">
+                    <p>답변일</p>
+                    <p>[<%=dateFormatChange(item.date)%>]</p>    
+                </li>
+            </ol>
+        </div>
+        <hr>
+        <%})%>
+        <%} else {%>
+            게시물이 없습니다.
+        <%}%>
+    </section>
+    <% include footer%>
+    
+</body>
+</html>
+<%
+function dateFormatChange(date) {
+    return date.toLocaleDateString();
+}
+%>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include headersub %><hr>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        function changePage(page){
+            //ajax통신으로 /boards/reply로 가서 받아온 데이터를 replyList에 받아온다.
+            //받아온 정보를 output에 담아서 html태그로 출력
+            $.get('/boards/reply?id=<%=content._id%>&page='+page+'&max=<%=content.comments.length%>',function(replyList){
+                var output = '';
+                for(var i=0; i<replyList.length;i++){
+                    output +='<div class="reply_content"><div class="reply_info">'+replyList[i].name+'/'+
+                    dateFormatChangeScript(replyList[i].date)+'</div>';
+                    output += '<div class="reply_text">'+replyList[i].memo.replace(/\\r\\n/gi, " ")+'</div></div>';
+                }
+                $('.reply_list').html(output);
+            });
+        }
+        function dateFormatChangeScript(date) {
+            var newdate = new Date(date);
+            return newdate.toLocaleDateString();
+        }
+    </script>
+</head>
+<body>
+    <section class="container about-content" style="margin-bottom: 30px;margin-top:0; text-align: center;">    
+            <div class ="petition_title" >
+                <ul>
+                    <li>
+                        <center><h2 class="text-center sub-texts" style="font-size:13pt;">- 청원진행중 -</h2></center>
+                    </li>           
+                    <li>
+                        <center><h1 class="title" style=" font-weight: bold;"><%=content.title%></h1></center>
+                    </li>
+                    <li>
+                        <center><h3 class="petitionsView_count" style="font-weight: bold;">참여인원: [<span class="counter"><%=content.parti_cnt%>명</span>]</h3></center>
+                    </li>
+                </ul>
+            </div>
+        <div>
+            <ul class="petitionsView_info_list" style = "display: block;">
+                <li><p>카테고리</p><%=content.category%></li>
+                <li><p>청원시작</p><%=dateFormatChange(content.start_date)%></li>
+                <li><p>청원마감</p><%=dateFormatChange(content.end_date)%></li>
+                <li style="margin-bottom:0"><p>청원인</p><%=nameSlicing(content.writer)%></li>
+            </ul>
+        </div>
+        <div class="petitionsView_grapy">
+                <ol class="petitionsView_grapy_area">
+                    <li class="petitionsView_grapyName p_first">
+                        <div class="dot">
+                        </div>
+                        <h4>청원시작</h4>
+                    </li>
+                    <li class="petitionsView_grapyName p_second">
+                    <div class="dot">
+                        </div>
+                        <h4>청원진행중</h4>
+                    </li>
+                    <li class="petitionsView_grapyName p_third">
+                    <div class="dot">
+                    </div>
+                    <h4>청원종료</h4>
+                	</li>
+                    <li class="petitionsView_grapyName p_fourth">
+                    <div class="dot petitions_point_ing">
+                        <div class="point_box">
+                            <span class="sound_only">현재 상태 </span>
+                                <div class="point_box_back">
+                                    <div class="icon1"></div>
+                                    <div class="icon2"></div>
+                                    <div class="icon3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="petitions_txt_ing">브리핑</h4>
+                    </li>
+                    </ol>
+                    <div class="petitionsView_grapyLine"></div>
+            </div>
+            <div class ="petitionsView_write">
+                    <div class="petitionsView_writeHead">
+                        <h2 class="title">청원개요</h2>
+                    </div>
+                    <div class ="View_write">
+                        <%-content.contents.replace(/\n/g, '<br/>')%>
+                    </div>
+                </div>
+            <% if(answer){%>   
+            <div class ="petitionsView_write">
+                <div class="petitionsView_writeHead">
+                    <h2 class="title">청원답변</h2>
+                </div>
+                <div class ="View_write">
+                    <%=answer.contents.replace(/\n/g, '<br/>')%>
+                </div>
+            </div>
+            <%}%>
+        <div class="addBtngroup" style="margin-left:450px;">
+            <a href="/boards/answerWrite?id=<%=content._id%>">청원답변하기</a>
+            <a href="/boards">확인</a>
+        </div>
+    </section><hr>
+    <section class="container about-content">
+        <!--댓글 5개만 보여주고 페이징-->
+        <div class="reply">
+            <div class = "reply_list">
+            <div class="contact-form">
+                <div style="margin-bottom: 30px;">
+                    <h2 class="title">청원동의 <span style="color:#66ccff; font-weight: bold;"><%=content.parti_cnt%></span>명</h2>
+                </div>
+                <!-- 댓글 작성 form-->
+                <form id="replyAction" action="/boards/reply" method="post">
+                    <input type="hidden" name="petitionId" id="petitionId" value="<%=content._id%>">
+                    <div class="col-xs-12 wow animated slideInRight" data-wow-delay=".5s">
+                        <% if(uid == null) {%>
+                        <textarea class="form textarea" id="replyComment" name="replyComment" placeholder="로그인 후 이용가능합니다." rows="3" cols="15" style="float:left; width: 75%;"></textarea>
+                        <button type="submit" class="form-btn semibold" style="float:left;width: 15%;margin-left: 20px;margin-top: 30px;">댓글 작성</button>
+
+                        <% } else { %>
+                        <textarea class="form textarea" id="replyComment" name="replyComment" placeholder="동의합니다." rows="3" cols="15" style="float:left; width: 75%;"></textarea>
+                        <button type="submit" class="form-btn semibold" style="float:right; width: 15%;margin-left: 20px;margin-top: 30px;">댓글 작성</button>
+                        <% } %>
+                    </div>
+                </form>
+                <%if(content.comments.length>0){%>
+                <%var commentsList = content.comments;%>
+                <%for(var i=0;i<commentsList.length;i++){%>
+                <%if(i<5){%>
+                <div class="reply_content">
+                    <div class="reply_info"><h4><%=nameSlicing(commentsList[i].name)%> / <%=dateFormatChange(commentsList[i].date)%></h4></div>
+                    <div class="reply_text"><p class="about-text"><%=commentsList[i].memo.replace(/\n/g, '<br/>')%></p></div>
+                </div>
+                <%}%>
+                <%}%>
+                <%} else {%>
+                <div class="reply_content">
+                    <div class="reply_info">댓글이 없습니다</div>
+                </div>
+                <%}%>
+            </div>
+        </div>
+        </div>
+        <!--댓글 페이징-->
+        <center>
+        <div class="pagination" style="margin:auto;">
+          <ul class="pagination">
+            <%for(var i=1; i<=replyPage;i++){%>
+            <li class="page-item">
+              <a href="#" onclick="changePage(<%=i%>);"><%=i%></a>
+            </li>
+            <%}%>
+          </ul>
+        </div>
+        </center>
+    </section>
+    <% include footer%>
+
+</body>
+</html>
+<%
+function dateFormatChange(date) {
+    return date.toLocaleDateString();
+}
+%>
+<%
+function nameSlicing(name){
+    var hidename = name.slice(0,3);
+    hidename = hidename.concat("***");
+
+    var email_i = name.indexOf("@");
+    return hidename.concat(name.slice(email_i));
+}
+%>

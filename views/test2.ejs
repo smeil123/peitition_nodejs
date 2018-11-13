@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="free-educational-responsive-web-template-webEdu">
+  <meta name="author" content="webThemez.com">
+  <title>회원가입 서울시립대 학생청원</title>
+  <link rel="favicon" href="assets/images/favicon.png">
+  <link rel="stylesheet" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css"> 
+  <link rel="stylesheet" href="assets/css/bootstrap-theme.css" media="screen"> 
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel='stylesheet' id='camera-css'  href='assets/css/camera.css' type='text/css' media='all'> 
+  <link rel="stylesheet" type="text/css" media="all" href="assets/css/pro-bars.min.css">
+  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+  <script>
+        $(function(){
+            if(errorCnt ==1){
+                alert(errorMessage);
+            }
+        })();
+</script>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="assets/js/html5shiv.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+    <section class="container about-content">
+        <center><h2 class="title" style="margin-bottom: 30px;">회원가입</h2></center>
+        <!-- Form Area -->
+        <div class="contact-form">
+            <!-- Form -->
+            <form id="contact-us" method="post" action="/users/join">
+                <!-- Email -->
+                <label for="signupEmail">이메일 주소</label>
+                <input type="email" name="signupEmail" id="signupEmail" required="required" class="form" placeholder="이메일 주소" />
+                <label id="valid_email" style="color:red" hidden="">이메일 주소 형식이 잘못되었습니다.</label>
+                <label id="valid_email_duplicate" style="color:red" hidden="">이미 가입한 이메일이 있습니다.</label>
+
+                <!-- Password -->
+                <label for="signupPassword">비밀번호</label>
+                <input type="password" name="signupPassword" id="signupPassword" required="required" class="form" placeholder="비밀번호" />
+                <label id="valid_password" style="color:red" hidden="">영문, 숫자 혼합하여 6~20자리 이내</label>
+
+                <label for="signupPassword2">비밀번호 확인</label>
+                <input type="password" name="signupPassword2" id="signupPassword2" required="required" class="form" placeholder="비밀번호 확인" />
+                <p class="help-block">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
+                <label id="valid_password2" style="color:red" hidden="">위 비밀번호와 같지 않습니다.</label>
+
+                <!-- Send Button -->
+                <button type="submit" id="submit" name="submit" class="form-btn semibold">회원가입</button>
+
+            </form>
+        </div><!-- End Contact Form Area -->
+    </section>
+
+	<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
+    <script src="assets/js/modernizr-latest.js"></script> 
+    <script type='text/javascript' src='assets/js/jquery.min.js'></script>
+    <script type='text/javascript' src='assets/js/jquery.mobile.customized.min.js'></script>
+    <script type='text/javascript' src='assets/js/camera.min.js'></script> 
+    <script src="assets/js/bootstrap.min.js"></script> 
+        
+</body>
+</html>

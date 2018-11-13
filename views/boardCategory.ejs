@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src = "/javascripts/categorySort.js"></script>
+
+    <% include header %><hr>
+
+</head>
+<body>
+    <section class="container about-content" >
+        <h2 class="title" style="margin-bottom: 30px;">청원 분야별 보기</h2>
+        <div class="category_area">
+            <ul>
+                <li value="전체"><a href="javascript:void(0);" class="category_link active" onclick="category_sel(this);" rel-category="0">전체</a></li>
+                <%if(category){%>
+                    <%category.forEach(function(cate){%>
+                    <li value="<%=category.name%>">
+                        <a href="javascript:void(0);" class="category_link" onclick="category_sel(this);" rel-category="<%=cate.name%>" style="font-weight: 500;">
+                            <%=cate.name%>
+                        </a>
+                    </li>
+                <%})}%>                
+            </ul>
+        </div>
+        
+    </section>
+
+     <!--답변 대기 중인 청원-->
+     <div class = "section_margin">
+        <section class="container about-content">
+            <div class="category_tab" style="margin-bottom: 30px;">
+                <ul>
+                    <li><a href="javascript:void(0);" class="category_tab1 active" rel-only="1" onclick="only_sel(this);" title="선택됨">진행 중 청원</a></li>
+                    <li><a href="javascript:void(1);" class="category_tab2" rel-only="2" onclick="only_sel(this);" title="선택됨">만료된 청원</a></li>
+                </ul>
+            </div>
+            <h2 class="title" style="margin-bottom: 30px;">추천순 TOP5</h2>
+            <div class = "petition_list">
+            <table class="table table-hover">
+                <tr class="table-active">
+                    <th>번호</th>
+                    <th>분류</th>
+                    <th>제목</th>
+                    <th>청원인</th>
+                    <th>청원기간</th>
+                    <th>참여인원</th>
+                    <th>조회 수</th>
+                </tr>
+                <%if(conditionPetition){%>
+                    <%var i = 0;%>
+                    <%conditionPetition.forEach(function(item){%>
+                    <%i++;%>
+                    <tr>
+                        <td class="number"><%=i%></td>
+                        <td class="category"><%=item.category%></td>
+                        <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+                        <td class="writer"><%=nameSlicing(item.writer)%></td>
+                        <td class="date"><%=dateFormatChange(item.start_date)%>~<%=dateFormatChange(item.end_date)%></td>
+                        <td class="participants_cnt"><%=item.parti_cnt%></td>
+                        <td class="cnt"><%=item.count%></td>
+                    </tr>
+                    <%})%>
+                    <%} else {%>
+                    <tr>
+                        <td colspan="5">게시물이 없습니다.</td>
+                    </tr>
+                <%}%>
+                </table>
+            </div>
+            </section>
+        </div>
+        <!--답변 대기 중인 청원 끝-->
+    <!--청원 목록-->
+    <div class = "section_margin">
+        <section class="container about-content">
+        <div class="petition_list_total">
+        <table class="table table-hover">
+            <div style="float:left">
+                <h2 class="title">청원 목록</h2>
+            </div>
+            <div style="float:right">
+                <h2 class="title" style="font-size:15pt; font-weight: bold"><a href="/boards/write">지금 청원하기</a></h2>
+            </div>
+            <tr class="table-active">
+                <th>번호</th>
+                <th>분류</th>
+                <th>제목</th>
+                <th>청원인</th>
+                <th>청원기간</th>
+                <th>참여인원</th>
+                <th>조회 수</th>
+            </tr>
+    
+            <%if(contents){%>
+                <%var i = 0;%>
+                <%contents.forEach(function(item){%>
+                <%i++;%>
+                <tr>
+                    <td class="number"><%=i%></td>
+                    <td class="category"><%=item.category%></td>
+                    <td class="title"><a href="/boards/view?id=<%=item._id%>"><%=item.title%></a></td>
+                    <td class="writer"><%=nameSlicing(item.writer)%></td>
+                    <td class="date"><%=dateFormatChange(item.start_date)%>~<%=dateFormatChange(item.end_date)%></td>
+                    <td class="participants_cnt"><%=item.parti_cnt%></td>
+                    <td class="cnt"><%=item.count%></td>
+                </tr>
+                <%})%>
+                <%} else {%>
+                <tr>
+                    <td colspan="5">게시물이 없습니다.</td>
+                </tr>
+            <%}%>
+        </table>
+        </div>
+        <center>
+            <div class="list_pagination">
+                <div class="pagination" style="margin:auto;">
+                    <ul class="pagination">
+                    <%
+                    for(var i=1; i<=pagination; i++){%>
+                    <li class="page-item">
+                        <a href="javascript:void(0);" class="page-link" onclick="paging(this);"><%=i%></a>
+                    </li>
+                    <%}%>
+                    </ul>
+                </div>
+            </div>
+        </center>
+    </section>
+    </div>
+        <!--청원 목록 끝-->
+    <% include footer%>
+
+</body>
+</html>
+
+<%
+function dateFormatChange(date) {
+    return date.toLocaleDateString();
+}
+%>
+<%
+function nameSlicing(name){
+    var hidename = name.slice(0,3);
+    hidename = hidename.concat("***");
+
+    var email_i = name.indexOf("@");
+    return hidename.concat(name.slice(email_i));
+}
+%>

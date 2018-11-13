@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link rel='stylesheet' href='/stylesheets/style.css' /> -->
+        <!-- <link rel="stylesheet" href="/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <% include headersub %><hr>
+        <script>
+        function submitContents(){
+            // var title = $('#addContentSubject').val();
+            var contents = $('#addContents').val();
+
+            //새글 등록
+            if(contents == ''){
+                alert("청원답변 내용 있어야합니다.");
+                return;
+            }else{
+                $('#writeAction').submit();
+            }
+        }
+        </script>
+    </head>
+    <body>
+      <!-- 새 글 입력받는 폼  -->
+    <section class="container about-content">
+        <div class ="petition" style="border: 2px solid black;margin-bottom: 30px;">
+        <ul>
+            <li>
+                <center><h2 class="text-center sub-texts" style="font-size:13pt;">- 청원 답변하기 -</h2></center>
+            </li>           
+            <li>
+                <center><h1 class="title" style=" font-weight: bold;"><%=content.title%></h2></center>
+                <input type="hidden" name="petitionId" id="petitionId" value="<%=content._id%>">
+            </li>
+            <li>
+                <center><h3 class="text-center sub-texts">참여인원:[<%=content.parti_cnt%>명]</h2></center>
+            </li>
+            <li>
+                <label for="petitonContent"><h3 class="text-center sub-texts" style="color:black;">청원개요</h3></label><br>
+                <p class="icon-text" id = "petitonContent"><%=content.contents%></p></li>
+        </ul>
+        </div>
+    </section><hr>
+
+    <section class="container about-content">
+        <div class="write_form">
+            <form id="writeAction" action="/boards/answer?mode=add" method="post">
+                <input type="hidden" name="ContentId" id="ContentId" value="<%=content._id%>">
+                <label for="addContents"><h3>청원답변내용</h3> </label>
+                <textarea class="form-control" id="addContents" name="addContents" rows="10" cols="80"></textarea>
+            <center>
+            <div id = "new" class="addBtngroup" style="margin-top: 10px;">
+                <button type="submit" class="btn btn-secondary"><a onclick="submitContents();">작성</a></button>
+                <button type="button" class="btn btn-secondary"><a href="/boards">목록</a></button>
+            </div>
+            </center>
+        </form>
+    </div>
+    </section>
+    <% include footer%>
+
+  </body>
+</html>
